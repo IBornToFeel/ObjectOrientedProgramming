@@ -16,6 +16,10 @@ public class MyList<T> {
     private Node<T> tail;
     private int size;
 
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
     public int size() {
         return size;
     }
@@ -32,6 +36,57 @@ public class MyList<T> {
         size++;
     }
 
+    public void addFirst(T value) {
+        Node<T> n = new Node<>(value);
+        if (head == null) {
+            head = tail = n;
+        }
+        else {
+            head.prev = n;
+            n.next = head;
+            head = n;
+        }
+        size++;
+    }
+
+    public T getfirst() throws ListException {
+        checkEmpty();
+        return head.value;
+    }
+
+    public T getlast() throws ListException {
+        checkEmpty();
+        return tail.value;
+    }
+
+    public T remlast() throws ListException{
+        checkEmpty();
+        T value = tail.value;
+        if (size == 1){
+            head = tail = null;
+        }
+        else {
+            tail = tail.prev;
+            tail.next = null;
+        }
+        size--;
+        return value;
+    }
+
+    public T remfirst() throws ListException{
+        checkEmpty();
+        T value = head.value;
+        if (size == 1){
+            head = tail = null;
+        }
+        else {
+            head = head.next;
+            tail.next = null;
+        }
+        size--;
+        return value;
+        }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
@@ -45,5 +100,16 @@ public class MyList<T> {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    private void checkEmpty() throws ListException {
+        if (isEmpty()) {
+            throw new ListException("List is empty");
+        }
+    }
+}
+class ListException extends Exception {
+    public ListException(String error) {
+        super(error);
     }
 }
