@@ -1,6 +1,9 @@
 package ru.vsu.cs.oop.volkov_a_a.my_list;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class MyList<T> {
+public class MyList<T> implements Iterable<T> {
+
 
     private static class Node<T> {
         T value;
@@ -159,6 +162,48 @@ public class MyList<T> {
     }
 
 
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private Node<T> curr = head;
+
+            @Override
+            public boolean hasNext() {
+                return curr != null;
+            }
+
+            @Override
+            public T next() {
+                if (curr == null) {
+                    throw new NoSuchElementException();
+                }
+                T value = curr.value;
+                curr = curr.next;
+                return value;
+            }
+        };
+    }
+
+    public Iterator<T> descIterator() {
+        return new Iterator<T>() {
+            private Node<T> curr = tail;
+
+            @Override
+            public boolean hasNext() {
+                return curr != null;
+            }
+
+            @Override
+            public T next() {
+                if (curr == null) {
+                    throw new NoSuchElementException();
+                }
+                T value = curr.value;
+                curr = curr.prev;
+                return value;
+            }
+        };
+    }
 
     @Override
     public String toString() {
