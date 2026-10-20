@@ -16,6 +16,25 @@ public class MyList<T> {
     private Node<T> tail;
     private int size;
 
+    private Node<T> getnode(int index) throws ListException {
+        if (index < 0 || index >= size) {
+            throw new ListException(String.format("Incorrect index [%d]", index));
+        }
+        Node<T> curr;
+        if (index < size/2) {
+            curr = head;
+            for (int i = 0; i < index; i++){
+                curr = curr.next;
+            }
+        }
+        else {
+            curr = tail;
+            for (int i = size - 1; i > index; i--)
+                curr = curr.prev;
+        }
+        return curr;
+    }
+
     public boolean isEmpty() {
         return size == 0;
     }
@@ -73,7 +92,7 @@ public class MyList<T> {
         return value;
     }
 
-    public T remfirst() throws ListException{
+    public T remfirst() throws ListException {
         checkEmpty();
         T value = head.value;
         if (size == 1){
@@ -85,7 +104,61 @@ public class MyList<T> {
         }
         size--;
         return value;
+    }
+
+    public T set(int index, T value) throws ListException {
+        return getnode(index).value = value;
+    }
+
+    public T get(int index) throws ListException {
+        return getnode(index).value;
+    }
+
+    public void cler(){
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+    public void insert(int index, T value) throws ListException {
+        if (index < 0 || index >= size) {
+            throw new ListException(String.format("Incorrect index [%d]", index));
         }
+        if (index == 0){
+            addFirst(value);
+        } else if (index == size) {
+            addLast(value);
+        }
+        else {
+            Node<T> curr = getnode(index);
+            Node<T> prev_neighbor = curr.prev;
+            Node<T> n = new Node<>(value);
+            n.prev = prev_neighbor;
+            n.next = curr;
+            prev_neighbor.next = n;
+            curr.prev = n;
+            size++;
+        }
+    }
+
+    public T remove(int index) throws ListException {
+        if (index < 0 || index >= size) {
+            throw new ListException(String.format("Incorrect index [%d]", index));
+        }
+        if (index == 0) {
+            return remfirst();
+        }
+        if (index == size - 1) {
+            return remlast();
+        }
+        Node<T> node = getnode(index);
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+        size--;
+        return node.value;
+    }
+
+
 
     @Override
     public String toString() {
