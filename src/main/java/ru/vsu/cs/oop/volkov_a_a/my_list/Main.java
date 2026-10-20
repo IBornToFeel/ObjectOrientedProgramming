@@ -3,10 +3,14 @@ import java.util.Iterator;
 
 public class Main {
     public static void main(String[] args) throws ListException{
-        MyList<Integer> list = new MyList<>();
-        list.addLast(10);
-        list.addLast(30);
-        list.addLast(50);
+        My_Сyclical_List<Integer> c = new My_Сyclical_List<>();
+        System.out.println(c);
+        c.addLast(1);
+        c.addLast(2);
+        c.addLast(3);
+        c.addFirst(0);
+        System.out.println(c);
+
 //        for (Integer v : list) {
 //            System.out.print(v + " ");
 //        }
